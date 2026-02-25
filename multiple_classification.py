@@ -52,43 +52,30 @@ default_map = {
     'No': 0,
     'Yes': 1
 }
-if(selected == 'BMI'):
-
+if (selected == 'BMI'):
     st.title('BMI Classification')
+    person_gender = st.selectbox('Gender', ['Male', 'Female'])
+    person_height = st.number_input('Height (cm)', min_value=0, value=170)
+    person_weight = st.number_input('Weight (kg)', min_value=0, value=60)
 
-    # mapping ให้ตรงกับ dataset ตอน train
-    gender_map = {'Male': 1, 'Female': 0}
-
-    person_gender = st.selectbox('Gender', list(gender_map.keys()))
-    height = st.number_input('Height (cm)', min_value=1.0)
-    weight = st.number_input('Weight (kg)', min_value=1.0)
-
+ 
+    bmi_labels = {
+        0: 'Extremely Weak',
+        1: 'Weak',
+        2: 'Normal',
+        3: 'Overweight',
+        4: 'Obesity',
+        5: 'Extreme Obesity'
+    }
     if st.button('Predict'):
-
-        try:
-            features = [[
-                gender_map[person_gender],
-                height,
-                weight
-            ]]
-
-            prediction = BMI_model.predict
-
-            bmi_labels = {
-                0: 'Extremely Weak',
-                1: 'Weak',
-                2: 'Normal',
-                3: 'Overweight',
-                4: 'Obesity',
-                5: 'Extreme Obesity'
-            }
-
-            result = bmi_labels[int(prediction[0])]
-
-            st.success(f'Result: {result}')
-
-        except Exception as e:
-            st.error(f'Error: {e}')
+        gender_val = 0 if person_gender == 'Male' else 1
+        prediction = bmi_model.predict([[
+            gender_val, 
+            float(person_height), 
+            float(person_weight)
+        ]])
+        result_label = bmi_labels.get(int(prediction[0]), "Unknown")
+        st.success(f'ผลการทำนายคือ: **{result_label}**')
     
 if(selected == 'Loan'):
     st.title('Loan Classification')
@@ -214,6 +201,7 @@ if(selected == 'Riding'):
           
 
     st.success(Riding_prediction)
+
 
 
 
