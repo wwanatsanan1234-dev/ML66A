@@ -72,7 +72,7 @@ if(selected == 'BMI'):
                 weight
             ]]
 
-            prediction = BMI_model.predict(features)
+            prediction = BMI_model.predict
 
             bmi_labels = {
                 0: 'Extremely Weak',
@@ -214,6 +214,7 @@ if(selected == 'Riding'):
           
 
     st.success(Riding_prediction)
+
 
 
 
