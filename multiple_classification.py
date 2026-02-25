@@ -55,8 +55,8 @@ default_map = {
 if (selected == 'BMI'):
     st.title('BMI Classification')
     person_gender = st.selectbox('Gender', ['Male', 'Female'])
-    person_height = st.number_input('Height (cm)', min_value=0, value=170)
-    person_weight = st.number_input('Weight (kg)', min_value=0, value=60)
+    person_height = st.number_input('Height (cm)', min_value=0, value=0)
+    person_weight = st.number_input('Weight (kg)', min_value=0, value=0)
 
  
     bmi_labels = {
@@ -201,6 +201,7 @@ if(selected == 'Riding'):
           
 
     st.success(Riding_prediction)
+
 
 
 
