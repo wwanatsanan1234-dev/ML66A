@@ -52,39 +52,43 @@ default_map = {
     'No': 0,
     'Yes': 1
 }
-if (selected == 'BMI'):
+if(selected == 'BMI'):
+
     st.title('BMI Classification')
 
-    person_gender = st.selectbox('Gender', gender_map)
-    height = st.number_input('Height (cm)', min_value=0.0)
-    weight = st.number_input('Weight (kg)', min_value=0.0)
+    # mapping ให้ตรงกับ dataset ตอน train
+    gender_map = {'Male': 1, 'Female': 0}
 
-    BMI_prediction = ''
+    person_gender = st.selectbox('Gender', list(gender_map.keys()))
+    height = st.number_input('Height (cm)', min_value=1.0)
+    weight = st.number_input('Weight (kg)', min_value=1.0)
 
     if st.button('Predict'):
 
-        prediction = BMI_model.predict([
-            [
+        try:
+            features = [[
                 gender_map[person_gender],
-                float(height),
-                float(weight)
-            ]
-        ])
+                height,
+                weight
+            ]]
 
-        if prediction[0] == 0:
-            BMI_prediction = 'Extremely Weak'
-        elif prediction[0] == 1:
-            BMI_prediction = 'Weak'
-        elif prediction[0] == 2:
-            BMI_prediction = 'Normal'
-        elif prediction[0] == 3:
-            BMI_prediction = 'Overweight'
-        elif prediction[0] == 4:
-            BMI_prediction = 'Obesity'
-        elif prediction[0] == 5:
-            BMI_prediction = 'Extreme Obesity'
+            prediction = BMI_model.predict(features)
 
-    st.success(BMI_prediction)
+            bmi_labels = {
+                0: 'Extremely Weak',
+                1: 'Weak',
+                2: 'Normal',
+                3: 'Overweight',
+                4: 'Obesity',
+                5: 'Extreme Obesity'
+            }
+
+            result = bmi_labels[int(prediction[0])]
+
+            st.success(f'Result: {result}')
+
+        except Exception as e:
+            st.error(f'Error: {e}')
     
 if(selected == 'Loan'):
     st.title('Loan Classification')
@@ -210,6 +214,7 @@ if(selected == 'Riding'):
           
 
     st.success(Riding_prediction)
+
 
 
 
