@@ -52,54 +52,40 @@ default_map = {
     'No': 0,
     'Yes': 1
 }
-if(selected == 'BMI'):
+if (selected == 'BMI'):
     st.title('BMI Classification')
-    
-    person_gender = st.selectbox('person_gender', gender_map)
-    person_education = st.selectbox('person_education', education_map)
-    person_income = st.text_input('person_income') 
-    person_emp_exp = st.text_input('person_emp_exp')
-    person_home_ownership = st.selectbox('person_home_ownership', home_map)
-    loan_amnt = st.text_input('loan_amnt')
-    loan_intent = st.selectbox('loan_intent', intent_map)
-    loan_int_rate = st.text_input('loan_int_rate')
-    loan_percent_income = st.text_input('loan_percent_income')
-    cb_person_cred_hist_length = st.text_input('cb_person_cred_hist_length')
-    credit_score = st.text_input('credit_score')
-    previous_loan_defaults_on_file = st.selectbox(
-        'previous_loan_defaults_on_file',
-        default_map)
-    
-    loan_prediction = ''
-    
+
+    person_gender = st.selectbox('Gender', gender_map)
+    height = st.number_input('Height (cm)', min_value=0.0)
+    weight = st.number_input('Weight (kg)', min_value=0.0)
+
+    BMI_prediction = ''
+
     if st.button('Predict'):
-        BMI_prediction = BMI_model.predict([
+
+        prediction = BMI_model.predict([
             [
-                
                 gender_map[person_gender],
-                education_map[person_education],
-                float(person_income),
-                float(person_emp_exp),
-                home_map[person_home_ownership],
-                float(loan_amnt),
-                intent_map[loan_intent],
-                float(loan_int_rate),
-                float(loan_percent_income),
-                float(cb_person_cred_hist_length),
-                float(credit_score),
-                default_map[previous_loan_defaults_on_file]
+                float(height),
+                float(weight)
             ]
         ])
-        
-        if (loan_prediction[0] == 0):
-            
-          loan_prediction = 'Not Accept'
-          
-        else:
-            
-          loan_prediction = 'Accept'
-          
-    st.success(loan_prediction)
+
+        if prediction[0] == 0:
+            BMI_prediction = 'Extremely Weak'
+        elif prediction[0] == 1:
+            BMI_prediction = 'Weak'
+        elif prediction[0] == 2:
+            BMI_prediction = 'Normal'
+        elif prediction[0] == 3:
+            BMI_prediction = 'Overweight'
+        elif prediction[0] == 4:
+            BMI_prediction = 'Obesity'
+        elif prediction[0] == 5:
+            BMI_prediction = 'Extreme Obesity'
+
+    st.success(BMI_prediction)
+    
 if(selected == 'Loan'):
     st.title('Loan Classification')
     
@@ -224,5 +210,6 @@ if(selected == 'Riding'):
           
 
     st.success(Riding_prediction)
+
 
 
